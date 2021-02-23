@@ -15,7 +15,7 @@ defmodule WidgetMarketplaceWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  @impl Socket
+  @impl Phoenix.Socket
   def connect(_params, socket, _connect_info) do
     {:ok, socket}
   end
@@ -30,6 +30,6 @@ defmodule WidgetMarketplaceWeb.UserSocket do
   #     WidgetMarketplaceWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
-  @impl Socket
+  @impl Phoenix.Socket
   def id(_socket), do: nil
 end
