@@ -1,0 +1,121 @@
+name: 'CI'
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  Checks:
+    runs-on: ubuntu-18.04
+    env:
+      MIX_ENV: 'test'
+      NPM_CONFIG_PREFIX: ${{ github.workspace }}/.npm-global
+      IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
+
+    services:
+      postgres:
+        image: postgres:11
+        ports: ['5432:5432']
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: '23.2.3'
+          elixir-version: '1.11.2'
+
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - uses: actions/cache@v2
+        with:
+          path: _build
+          key: ${{ runner.os }}-build-
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - uses: actions/cache@v2
+        with:
+          path: priv/plts
+          key: ${{ runner.os }}-plts-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: |
+            ${{ runner.os }}-plts-
+
+      - uses: actions/cache@v2
+        with:
+          path: assets/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles(format('{0}{1}', github.workspace, './assets/package-lock.json')) }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install Elixir Deps
+        run: mix deps.get
+
+      - name: Elixir Compile
+        run: mix compile --warnings-as-errors
+
+      - name: Elixir Linting
+        run: mix format --check-formatted
+
+      - name: Elixir Static Code Analysis
+        run: mix credo --strict
+
+      - name: Elixir Dialyzer
+        run: mix dialyzer
+
+      - name: Configure NPM Directories
+        run: |
+          mkdir "$NPM_CONFIG_PREFIX"
+          echo "$NPM_CONFIG_PREFIX/bin" >> $GITHUB_PATH
+
+      - name: Migrate Database
+        run: |
+          mix ecto.create
+          mix ecto.migrate
+
+      - name: Elixir Tests
+        run: mix test
+
+      - name: NPM Packages
+        run: |
+          npm ci --prefix assets
+          npm install -g wait-on
+
+      - name: Xref Graph Gen/Upload
+        if: github.ref != 'refs/heads/main'
+        id: xref
+        run: |
+          mix xref graph --format dot
+          sudo apt-get install -y jq graphviz
+          dot -Tpng -Grankdir=LR xref_graph.dot -o xref_graph.png
+          _image_url=$(curl \
+            --request POST \
+            --url https://api.imgur.com/3/image \
+            --header "authorization: Client-ID $IMGUR_CLIENT_ID" \
+            --header 'content-type: multipart/form-data;' \
+            -F "image=@$(pwd)/xref_graph.png" | jq '.data.link')
+          _image_html="<img alt=\"Xref Graph\" src=$_image_url>"
+          echo "_image_html=$_image_html" >> $GITHUB_ENV
+
+      - name: Add Xref Graph to PR Comment
+        if: github.ref != 'refs/heads/main'
+        uses: thollander/actions-comment-pull-request@master
+        with:
+          message: ${{ env._image_html }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
