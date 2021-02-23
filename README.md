@@ -1,20 +1,36 @@
-# WidgetMarketplace
+# Widget Marketplace
 
-To start your Phoenix server:
+A barebones marketplace for widgets.
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+## Getting started
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Clone the repo, and install dependencies.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### Dependencies
 
-## Learn more
+The following should be install prior to running the project:
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+- elixir 1.11.2
+- erlang 23.1.2
+- Postgres 13 (11+ is probably fine)
+
+There is a `.tool-versions` file for convineince in installing elixir and OTP via asdf.
+
+```
+asdf install
+```
+
+Run the following mix commands to bootstrap the project.
+```
+mix deps.get
+mix ecto.create
+mix ecto.migrate
+```
+
+Run the server with the following:
+```
+mix phx.server
+```
+
+
+
