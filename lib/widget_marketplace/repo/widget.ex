@@ -9,6 +9,7 @@ defmodule WidgetMarketplace.Repo.Widget do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
+  @derive {Phoenix.Param, key: :id}
 
   schema "widgets" do
     field :description, :string, null: false

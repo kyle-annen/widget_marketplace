@@ -10,22 +10,23 @@ use Mix.Config
 config :widget_marketplace,
   ecto_repos: [WidgetMarketplace.Repo]
 
-# Configures the endpoint
+config :widget_marketplace, WidgetMarketplaceWeb.Guardian,
+  issuer: "widget_marketplace",
+  # this should be abstracted to an env variable which is set during prod docker build
+  secret_key: "hbV7ionQAGK6QViWzthSX6aMuB49y5uWHR2PzYiWHbh1Bs7Q8U84CulM1xtuGgGv"
+
 config :widget_marketplace, WidgetMarketplaceWeb.Endpoint,
   url: [host: "localhost"],
+  # this should be abstracted to an env variable which is set during prod docker build
   secret_key_base: "0gQE2/c1LHOYfMpwna+2qoUqoqNrFCcZmlhDNSFmZ6Qkwbgy5aWD3GaIiw6qX9q/",
   render_errors: [view: WidgetMarketplaceWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: WidgetMarketplace.PubSub,
   live_view: [signing_salt: "X/TygAlQ"]
 
-# Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

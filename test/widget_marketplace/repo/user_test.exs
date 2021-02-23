@@ -8,7 +8,12 @@ defmodule WidgetMarketplace.Repo.UserTest do
     test "users can be created" do
       {:ok, user} =
         %User{}
-        |> User.changeset(%{first_name: "test", last_name: "name", email: "testname@gmail.com"})
+        |> User.changeset(%{
+          first_name: "test",
+          last_name: "name",
+          password: "testpass",
+          email: "testname@gmail.com"
+        })
         |> Repo.insert()
 
       assert user.first_name == "test"

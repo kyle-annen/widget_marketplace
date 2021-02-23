@@ -4,6 +4,7 @@ defmodule WidgetMarketplace.Guardian do
   """
   use Guardian, otp_app: :widget_marketplace
 
+  alias WidgetMarketplace.Repo
   alias WidgetMarketplace.Repo.User
 
   def subject_for_token(%User{} = user, _claims) do

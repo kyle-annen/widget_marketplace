@@ -5,6 +5,7 @@ defmodule WidgetMarketplace.Repo.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Ecto.Changeset
   alias WidgetMarketplace.Repo.Widget
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -15,7 +16,6 @@ defmodule WidgetMarketplace.Repo.User do
     field :last_name, :string, null: false
     field :email, :string, null: false
     field :password, :string, virtual: true
-    field :password_confirmation, :string, virtual: true
     field :password_hash, :string, null: false
 
     has_many :widgets, Widget
@@ -24,12 +24,19 @@ defmodule WidgetMarketplace.Repo.User do
   end
 
   @required_fields [:first_name, :last_name, :email]
-  @optional_fields [:password, :password_confirmation]
+  @optional_fields [:password]
+  @derive {Phoenix.Param, key: :id}
 
   def changeset(user, attrs) do
     user
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> put_change(:password_hash, "asdf")
+    |> put_password_hash()
   end
+
+  defp put_password_hash(%Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, password_hash: Argon2.hash_pwd_salt(password))
+  end
+
+  defp put_password_hash(changeset), do: changeset
 end
