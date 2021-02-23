@@ -30,6 +30,7 @@ defmodule WidgetMarketplace.Repo.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> unique_constraint(:email)
     |> validate_required(@required_fields)
     |> put_password_hash()
   end
