@@ -35,7 +35,7 @@ defmodule WidgetMarketplaceWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Sandbox.checkout(WidgetMarketplace.Repo)
+    :ok = SQL.Sandbox.checkout(WidgetMarketplace.Repo)
 
     unless tags[:async] do
       SQL.Sandbox.mode(WidgetMarketplace.Repo, {:shared, self()})
