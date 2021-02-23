@@ -57,7 +57,8 @@ defmodule WidgetMarketplace.MixProject do
   defp dev_deps do
     [
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
+      {:mix_test_watch, "~> 1.0", only: [:dev]},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
