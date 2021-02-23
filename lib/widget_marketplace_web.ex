@@ -23,6 +23,8 @@ defmodule WidgetMarketplaceWeb do
 
       import Plug.Conn
       import WidgetMarketplaceWeb.Gettext
+
+      # credo:disable-for-next-line
       alias WidgetMarketplaceWeb.Router.Helpers, as: Routes
     end
   end
@@ -68,6 +70,8 @@ defmodule WidgetMarketplaceWeb do
 
       import WidgetMarketplaceWeb.ErrorHelpers
       import WidgetMarketplaceWeb.Gettext
+
+      # credo:disable-for-next-line
       alias WidgetMarketplaceWeb.Router.Helpers, as: Routes
     end
   end
