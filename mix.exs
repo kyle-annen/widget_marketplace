@@ -10,7 +10,7 @@ defmodule WidgetMarketplace.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps() ++ dev_deps()
     ]
   end
 
@@ -45,6 +45,13 @@ defmodule WidgetMarketplace.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"}
+    ]
+  end
+
+  defp dev_deps do
+    [
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 
