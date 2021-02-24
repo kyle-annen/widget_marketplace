@@ -50,6 +50,24 @@ defmodule WidgetMarketplace do
   end
 
   @doc """
+  Checks that the account balance is sufficient for the transaction
+  """
+  def purchase_widget(%User{} = buyer, seller_id, widget_id, amount) do
+    case WidgetMarketplace.get_user_balance(buyer) do
+      balance when balance < amount ->
+        {:error, :insufficient_funds}
+
+      _ ->
+        WidgetMarketplace.create(Transaction, %{
+          seller_id: seller_id,
+          buyer_id: buyer.id,
+          widget_id: widget_id,
+          amount: amount
+        })
+    end
+  end
+
+  @doc """
   Hashes the password entered by the user, authenticates by comparing the
   password_hash against the hash produced from the user entered password during
   login.

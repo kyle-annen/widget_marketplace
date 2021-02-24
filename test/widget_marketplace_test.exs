@@ -94,4 +94,56 @@ defmodule WidgetMarketplaceTest do
       assert 200 = WidgetMarketplace.get_user_balance(seller)
     end
   end
+
+  describe "purchase_widget/4" do
+    test "can be purchased if the account balance is greater than or equal to price" do
+      {:ok, seller} = WidgetMarketplace.create(User, @valid_user_atrrs)
+
+      {:ok, widget} =
+        %Widget{}
+        |> Widget.changeset(%{
+          description: "A great widget",
+          price: 123,
+          user_id: seller.id
+        })
+        |> Repo.insert()
+
+      {:ok, buyer} =
+        WidgetMarketplace.create(
+          User,
+          Map.merge(@valid_user_atrrs, %{email: "another@email.com"})
+        )
+
+      {:ok, _buyer_add_funds_transaction} =
+        WidgetMarketplace.create(Transaction, %{seller_id: buyer.id, amount: 1000})
+
+      assert {:ok, _transaction} =
+               WidgetMarketplace.purchase_widget(buyer, seller.id, widget.id, widget.price)
+    end
+
+    test "cannot be purchased if the account balance less than the price" do
+      {:ok, seller} = WidgetMarketplace.create(User, @valid_user_atrrs)
+
+      {:ok, widget} =
+        %Widget{}
+        |> Widget.changeset(%{
+          description: "A great widget",
+          price: 123,
+          user_id: seller.id
+        })
+        |> Repo.insert()
+
+      {:ok, buyer} =
+        WidgetMarketplace.create(
+          User,
+          Map.merge(@valid_user_atrrs, %{email: "another@email.com"})
+        )
+
+      {:ok, _buyer_add_funds_transaction} =
+        WidgetMarketplace.create(Transaction, %{seller_id: buyer.id, amount: 100})
+
+      assert {:error, :insufficient_funds} =
+               WidgetMarketplace.purchase_widget(buyer, seller.id, widget.id, widget.price)
+    end
+  end
 end
