@@ -17,6 +17,8 @@ defmodule WidgetMarketplaceWeb.ConnCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL
+
   using do
     quote do
       # Import conveniences for testing with connections
@@ -24,6 +26,7 @@ defmodule WidgetMarketplaceWeb.ConnCase do
       import Phoenix.ConnTest
       import WidgetMarketplaceWeb.ConnCase
 
+      # credo:disable-for-next-line
       alias WidgetMarketplaceWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
@@ -32,10 +35,10 @@ defmodule WidgetMarketplaceWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(WidgetMarketplace.Repo)
+    :ok = SQL.Sandbox.checkout(WidgetMarketplace.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(WidgetMarketplace.Repo, {:shared, self()})
+      SQL.Sandbox.mode(WidgetMarketplace.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}
