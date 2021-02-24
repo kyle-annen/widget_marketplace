@@ -31,6 +31,9 @@ defmodule WidgetMarketplaceWeb.Router do
     get "/logout", SessionController, :logout
 
     get "/widgets", PageController, :widgets
+
+    get "/new_widget", PageController, :new_widget
+    post "/new_widget", PageController, :create_widget
   end
 
   scope "/", WidgetMarketplaceWeb do
