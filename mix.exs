@@ -9,6 +9,10 @@ defmodule WidgetMarketplace.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
+      dialyzer: [
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
+        plt_add_apps: [:ex_unit, :mix]
+      ],
       aliases: aliases(),
       deps: deps() ++ dev_deps()
     ]
