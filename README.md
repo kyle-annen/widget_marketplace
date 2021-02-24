@@ -29,6 +29,11 @@ mix ecto.create
 mix ecto.migrate
 ```
 
+Install NPM dependencies:
+```
+npm install --prefix assets/
+```
+
 Run the server with the following, the user interface is fully functional @ http://localhost:4000/
 ```
 mix phx.server
