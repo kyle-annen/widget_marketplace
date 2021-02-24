@@ -2,6 +2,7 @@ defmodule WidgetMarketplaceWeb.PageController do
   use WidgetMarketplaceWeb, :controller
 
   alias WidgetMarketplace.Guardian
+  alias WidgetMarketplace.Repo.Transaction
   alias WidgetMarketplace.Repo.User
   alias WidgetMarketplace.Repo.Widget
 

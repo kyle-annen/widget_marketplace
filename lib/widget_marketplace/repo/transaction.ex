@@ -20,11 +20,12 @@ defmodule WidgetMarketplace.Repo.Transaction do
     timestamps()
   end
 
-  @required_fields [:buyer_id, :seller_id, :amount, :widget_id]
+  @required_fields [:seller_id, :amount]
+  @optional_fields [:buyer_id, :widget_id]
 
   def changeset(user, attrs) do
     user
-    |> cast(attrs, @required_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
   end
 end
