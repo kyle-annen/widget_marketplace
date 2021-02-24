@@ -1,0 +1,12 @@
+<section class="phx-hero">
+  <h1><%= "Welcome to the Wiedget Marketplace #{@current_user.first_name}!" %></h1>
+  <p>There are currently <%= length(@widgets) %> for sale!</p>
+</section>
+
+<section class="row">
+  <article class="column">
+  </article>
+  <article class="column">
+  </article>
+</section>
+

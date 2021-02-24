@@ -29,12 +29,14 @@ defmodule WidgetMarketplaceWeb.Router do
     post "/login", SessionController, :login
 
     get "/logout", SessionController, :logout
+
+    get "/widgets", PageController, :widgets
   end
 
   scope "/", WidgetMarketplaceWeb do
     pipe_through [:browser, :auth, :ensure_auth]
 
-    get "/market", PageController, :market
+    get "/cart", PageController, :market
   end
 
   if Mix.env() in [:dev, :test] do
