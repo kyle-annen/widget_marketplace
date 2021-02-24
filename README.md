@@ -1,20 +1,105 @@
-# WidgetMarketplace
+# Widget Marketplace
 
-To start your Phoenix server:
+A barebones marketplace for widgets.
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+## Getting started
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Clone the repo, and install dependencies.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### Dependencies
 
-## Learn more
+The following should be install prior to running the project:
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+- elixir 1.11.2
+- erlang 23.1.2
+- Postgres 13 (11+ is probably fine)
+
+There is a `.tool-versions` file for convineince in installing elixir and OTP via asdf.
+
+```
+asdf install
+```
+
+Postgres can be installed from the [Postgres website](https://postgresapp.com/)
+
+Run the following mix commands to bootstrap the project.
+```
+mix deps.get
+mix ecto.create
+mix ecto.migrate
+```
+
+Run the server with the following, the user interface is fully functional @ http://localhost:4000/
+```
+mix phx.server
+```
+
+Run the tests with the following:
+```
+mix test
+```
+
+# Technology choices
+- Elixir: Citybase writes elixir, seemed logical
+- Postgres: I always ask "Why not postgres", and I think that answer should be compelling. Super mature, open source.
+- Phoenix: Even for APIs, I find Phoenix to offer many of the features I would like to have.
+
+# Design decisions
+- Utilized the repository pattern. I believe in most cases, we can use generalized functions for access to the datbase. Additionally, if their comes a time when the database needs to be swapped, or multiple adapters need to be utilized, the repository provides a seam that makes this much simpler.
+- Tests are exclusively on the `WidgetMarkeplace` portion of the application. This is purely due to time. I wanted to test well where I needed to, and I just don't think that I had the time to test all actions on the front end. As it was, I spent ~8 hours on the entire project.
+- Utilized the below dependencies for the reasons stated below.
+- The `WidgetMarkeplace` has more documentation around the business logic.
+- I chose to use integer for currency. The goal was to use the `Money` library, which is a bit similar to Authentication, generally suggested not to roll your own, and I didn't have the time to go down the "How do we store currency" rabbit hole. Would be next on the to-do.
+
+# Hex dependencies
+
+#### argon2_elixir
+This dependecy is need to ensure the hashing used is strong engouh to last in production for a few years.
+
+#### ecto_sql
+This dependecy is needed in order to use Ecto with the postgres database.
+
+#### guardian
+This dependecy is used for session tokens, and authorization.
+
+#### jason
+This dependecy is use to serialize/deserialize JSON.
+
+#### phoenix
+This is the base web framework.
+
+#### phoenix_ecto
+This is the plugin integrates phoenix and ecot
+
+#### phoenix_html
+This plugin provids many methods for creating html markup dynamically using helpers.
+
+#### phoenix_live_dashboard
+This plugin now ships with phoenix. Link is removed, but can still be visited at `http://localhost:4000/dashboard`
+
+#### phoenix_live_reload
+This dependecy is used for development, hot reloads code changes while the dev server is running.
+
+#### postgrex
+This dependecy is used by Ecto for the database adapter.
+
+#### telemetry_metrics
+This is the telemetry_metrics plugin, provides convineince methods for gathering metrics.
+
+#### telemetry_poller
+Allows to periodically collect measurements and dispatch them as Telemetry events. Ships with phoenix.
+
+#### plug_cowboy
+Plug adapter for the Erlang Cowboy web server.
+
+#### credo
+Configurable static code analyzer, used in development and CI.
+
+#### mix_test_watch
+Test watcher to smooth development.
+
+#### dialyxir
+Descrpancy analyzer for elixir. Used to check type signature if typespecs are provided, dead/unreachable code, unneeded test, etc. Used in CI.
+
+
+

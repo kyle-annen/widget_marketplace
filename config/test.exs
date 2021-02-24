@@ -1,14 +1,9 @@
 use Mix.Config
 
-# Configure your database
-#
-# The MIX_TEST_PARTITION environment variable can be used
-# to provide built-in test partitioning in CI environment.
-# Run `mix help test` for more information.
 config :widget_marketplace, WidgetMarketplace.Repo,
   username: "postgres",
   password: "postgres",
-  database: "widget_marketplace_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "widget_marketplace_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 

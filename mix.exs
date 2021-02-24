@@ -37,17 +37,19 @@ defmodule WidgetMarketplace.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:argon2_elixir, "~> 2.0"},
+      {:ecto_sql, "~> 3.4"},
+      {:gettext, "~> 0.11"},
+      {:guardian, "~> 2.0"},
+      {:jason, "~> 1.0"},
       {:phoenix, "~> 1.5.7"},
       {:phoenix_ecto, "~> 4.1"},
-      {:ecto_sql, "~> 3.4"},
-      {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:postgrex, ">= 0.0.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
-      {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"}
     ]
   end
@@ -55,7 +57,8 @@ defmodule WidgetMarketplace.MixProject do
   defp dev_deps do
     [
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false}
+      {:mix_test_watch, "~> 1.0", only: [:dev]},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end
 

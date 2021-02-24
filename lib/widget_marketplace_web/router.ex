@@ -1,6 +1,14 @@
 defmodule WidgetMarketplaceWeb.Router do
   use WidgetMarketplaceWeb, :router
 
+  pipeline :auth do
+    plug WidgetMarketplace.Plug.Authentication
+  end
+
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -9,28 +17,29 @@ defmodule WidgetMarketplaceWeb.Router do
     plug :put_secure_browser_headers
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   scope "/", WidgetMarketplaceWeb do
-    pipe_through :browser
+    pipe_through [:browser, :auth]
 
-    get "/", PageController, :index
+    get "/", PageController, :widgets
+
+    get "/signup", SessionController, :signup
+    post "/signup", SessionController, :create
+
+    get "/login", SessionController, :new
+    post "/login", SessionController, :login
+
+    get "/logout", SessionController, :logout
+
+    get "/widgets", PageController, :widgets
+
+    get "/new_widget", PageController, :new_widget
+    post "/new_widget", PageController, :create_widget
+
+    get "/add_funds", PageController, :add_funds
+
+    post "/buy_widget", PageController, :buy_widget
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", WidgetMarketplaceWeb do
-  #   pipe_through :api
-  # end
-
-  # Enables LiveDashboard only for development
-  #
-  # If you want to use the LiveDashboard in production, you should put
-  # it behind authentication and allow only admins to access it.
-  # If your application does not have an admins-only section yet,
-  # you can use Plug.BasicAuth to set up some basic authentication
-  # as long as you are also using SSL (which you should anyway).
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
 
