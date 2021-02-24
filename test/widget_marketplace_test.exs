@@ -13,7 +13,7 @@ defmodule WidgetMarketplaceTest do
 
   describe "create/2" do
     test "creates a record with valid attrs" do
-      {:ok, user} = WidgetMarketplace.create(User, @valid_user_atrrs)
+      assert {:ok, _user} = WidgetMarketplace.create(User, @valid_user_atrrs)
     end
   end
 
@@ -45,7 +45,7 @@ defmodule WidgetMarketplaceTest do
     test "returns the user if authenticated" do
       {:ok, _user} = WidgetMarketplace.create(User, @valid_user_atrrs)
 
-      assert {:ok, user} = WidgetMarketplace.authenticate("testuser@test.com", "valid_pass")
+      assert {:ok, _user} = WidgetMarketplace.authenticate("testuser@test.com", "valid_pass")
     end
   end
 end

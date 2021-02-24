@@ -17,14 +17,13 @@
 
 
 <section class="widget">
-  <%= Enum.map(@widgets, fn %{description: description, price: price, user: user} = widget -> %>
-    <% IO.inspect(widget) %>
+  <%= Enum.map(@widgets, fn %{id: id, description: description, price: price, user: user} -> %>
     <div class="panel panel-default">
       <div class="panel-body">
         <p><%= description %></p>
         <p><%= "Price: $#{price}" %></p>
         <p><%= "Seller: #{user.first_name} #{user.last_name}" %></p>
-        <a class="btn btn-primary" href="<%= @new_widget_path %>">Buy</a>
+        <a class="btn btn-primary" href="<%= @new_widget_path <> "/#{id}" %>">Buy</a>
       </div>
     </div>
   <% end) %>

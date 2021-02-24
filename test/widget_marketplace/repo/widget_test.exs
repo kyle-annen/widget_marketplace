@@ -17,10 +17,18 @@ defmodule WidgetMarketplace.Repo.WidgetTest do
         })
         |> Repo.insert()
 
-      {:ok, widget} =
-        %Widget{}
-        |> Widget.changeset(%{description: "A great widget", price: 123, user: user})
-        |> Repo.insert()
+      assert {:ok, widget} =
+               %Widget{}
+               |> Widget.changeset(%{
+                 description: "A great widget",
+                 price: 123,
+                 user_id: user.id
+               })
+               |> Repo.insert()
+
+      assert widget.description == "A great widget"
+      assert widget.price == 123
+      assert widget.user_id == user.id
     end
   end
 end
