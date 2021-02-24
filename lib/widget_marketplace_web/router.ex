@@ -34,6 +34,7 @@ defmodule WidgetMarketplaceWeb.Router do
 
     get "/new_widget", PageController, :new_widget
     post "/new_widget", PageController, :create_widget
+    get "/add_fund", PageController, :add_funds
   end
 
   scope "/", WidgetMarketplaceWeb do

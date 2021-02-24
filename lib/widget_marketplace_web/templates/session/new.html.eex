@@ -18,3 +18,4 @@
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
+<h4>New here? <%= link "Sign up", to: Routes.session_path(@conn, :signup) %></h4>

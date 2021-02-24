@@ -1,5 +1,16 @@
 <section class="phx-hero">
-  <h1><%= "Welcome to the Widget Marketplace #{@current_user.first_name}!" %></h1>
+  <%= if @current_user do %>
+    <h3><%= "Welcome, #{@current_user.first_name}" %></h3>
+    <h4><%= "Account balance: $1000" %></h4>
+    <p>
+        <a class="btn btn-info btn-sm" href="<%= @add_funds_path %>">Add funds</a>
+    </p>
+    
+    <%= link "Logout", to: Routes.session_path(@conn, :logout) %>
+  <% else %>
+    <%= link "Login", to: Routes.session_path(@conn, :login) %>
+  <% end %>
+
   <p>There are currently <%= length(@widgets) %> widgets for sale!</p>
   <a class="btn btn-primary" href="<%= @new_widget_path %>">List New Widget</a>
 </section>
@@ -12,7 +23,8 @@
       <div class="panel-body">
         <p><%= description %></p>
         <p><%= "Price: $#{price}" %></p>
-        <p><%= "Seller: {user.first_name} {user.last_name}" %></p>
+        <p><%= "Seller: #{user.first_name} #{user.last_name}" %></p>
+        <a class="btn btn-primary" href="<%= @new_widget_path %>">Buy</a>
       </div>
     </div>
   <% end) %>

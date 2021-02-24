@@ -1,8 +1,8 @@
 defmodule WidgetMarketplaceWeb.PageController do
   use WidgetMarketplaceWeb, :controller
 
-  alias WidgetMarketplace.Repo.Widget
   alias WidgetMarketplace.Guardian
+  alias WidgetMarketplace.Repo.Widget
 
   def index(conn, _) do
     user = Guardian.Plug.current_resource(conn)
@@ -13,11 +13,13 @@ defmodule WidgetMarketplaceWeb.PageController do
     user = Guardian.Plug.current_resource(conn)
     widgets = WidgetMarketplace.all(Widget, [:user])
     new_widget_path = Routes.page_path(conn, :new_widget)
+    add_funds_path = Routes.page_path(conn, :add_funds)
 
     render(conn, "widgets.html",
       current_user: user,
       widgets: widgets,
-      new_widget_path: new_widget_path
+      new_widget_path: new_widget_path,
+      add_funds_path: add_funds_path
     )
   end
 
@@ -55,5 +57,19 @@ defmodule WidgetMarketplaceWeb.PageController do
           action: Routes.page_path(conn, :new_widget)
         )
     end
+  end
+
+  def add_funds(conn, assigns) do
+    user = Guardian.Plug.current_resource(conn)
+    widgets = WidgetMarketplace.all(Widget, [:user])
+    new_widget_path = Routes.page_path(conn, :new_widget)
+    add_funds_path = Routes.page_path(conn, :add_funds)
+
+    render(conn, "widgets.html",
+      current_user: user,
+      widgets: widgets,
+      new_widget_path: new_widget_path,
+      add_funds_path: add_funds_path
+    )
   end
 end
