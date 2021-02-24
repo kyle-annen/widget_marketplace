@@ -40,11 +40,11 @@ defmodule WidgetMarketplace do
     Transaction
     |> where([t], t.seller_id == ^user_id or t.buyer_id == ^user_id)
     |> Repo.all()
-    |> Enum.reduce(0, fn %{seller_id: seller_id, amount: amount}, total ->
-      if seller_id == user_id do
-        total + amount
-      else
-        total - amount
+    |> Enum.reduce(0, fn %{seller_id: seller_id, buyer_id: buyer_id, amount: amount}, total ->
+      cond do
+        buyer_id == nil -> total + amount
+        seller_id == user_id -> total + amount * 0.95
+        true -> total - amount
       end
     end)
   end

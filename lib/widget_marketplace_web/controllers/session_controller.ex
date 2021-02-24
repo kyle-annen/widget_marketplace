@@ -33,7 +33,7 @@ defmodule WidgetMarketplaceWeb.SessionController do
     end
   end
 
-  def login(conn, %{"user" => %{"email" => email, "password" => password}} = attrs) do
+  def login(conn, %{"user" => %{"email" => email, "password" => password}}) do
     email
     |> WidgetMarketplace.authenticate(password)
     |> login_reply(conn)

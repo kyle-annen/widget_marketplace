@@ -91,7 +91,7 @@ defmodule WidgetMarketplaceTest do
         })
 
       assert 800 = WidgetMarketplace.get_user_balance(buyer)
-      assert 200 = WidgetMarketplace.get_user_balance(seller)
+      assert 190.0 = WidgetMarketplace.get_user_balance(seller)
     end
   end
 

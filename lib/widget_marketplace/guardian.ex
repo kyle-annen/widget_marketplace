@@ -4,7 +4,6 @@ defmodule WidgetMarketplace.Guardian do
   """
   use Guardian, otp_app: :widget_marketplace
 
-  alias WidgetMarketplace.Repo
   alias WidgetMarketplace.Repo.User
 
   def subject_for_token(%User{} = user, _claims) do
@@ -12,7 +11,6 @@ defmodule WidgetMarketplace.Guardian do
   end
 
   def resource_from_claims(%{"sub" => id} = claims) do
-    IO.inspect(claims, label: "claims")
     user = WidgetMarketplace.get(User, id)
     {:ok, user}
   rescue

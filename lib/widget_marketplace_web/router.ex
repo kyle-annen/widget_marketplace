@@ -20,7 +20,7 @@ defmodule WidgetMarketplaceWeb.Router do
   scope "/", WidgetMarketplaceWeb do
     pipe_through [:browser, :auth]
 
-    get "/", PageController, :index
+    get "/", PageController, :widgets
 
     get "/signup", SessionController, :signup
     post "/signup", SessionController, :create
@@ -38,12 +38,6 @@ defmodule WidgetMarketplaceWeb.Router do
     get "/add_funds", PageController, :add_funds
 
     post "/buy_widget", PageController, :buy_widget
-  end
-
-  scope "/", WidgetMarketplaceWeb do
-    pipe_through [:browser, :auth, :ensure_auth]
-
-    get "/cart", PageController, :market
   end
 
   if Mix.env() in [:dev, :test] do
