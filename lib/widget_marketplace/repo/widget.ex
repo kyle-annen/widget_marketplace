@@ -5,7 +5,7 @@ defmodule WidgetMarketplace.Repo.Widget do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias WidgetMarketplaUwerce.Repo.User
+  alias WidgetMarketplace.Repo.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -19,7 +19,7 @@ defmodule WidgetMarketplace.Repo.Widget do
     timestamps()
   end
 
-  @required_fields [:description, :price]
+  @required_fields [:description, :price, :user_id]
   @optional_fields []
 
   def changeset(user, attrs) do

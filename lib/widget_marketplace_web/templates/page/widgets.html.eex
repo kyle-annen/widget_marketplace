@@ -1,12 +1,20 @@
 <section class="phx-hero">
-  <h1><%= "Welcome to the Wiedget Marketplace #{@current_user.first_name}!" %></h1>
-  <p>There are currently <%= length(@widgets) %> for sale!</p>
+  <h1><%= "Welcome to the Widget Marketplace #{@current_user.first_name}!" %></h1>
+  <p>There are currently <%= length(@widgets) %> widgets for sale!</p>
+  <a class="btn btn-primary" href="<%= @new_widget_path %>">List New Widget</a>
 </section>
 
-<section class="row">
-  <article class="column">
-  </article>
-  <article class="column">
-  </article>
+
+<section class="widget">
+  <%= Enum.map(@widgets, fn %{description: description, price: price, user: user} = widget -> %>
+    <% IO.inspect(widget) %>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p><%= description %></p>
+        <p><%= "Price: $#{price}" %></p>
+        <p><%= "Seller: {user.first_name} {user.last_name}" %></p>
+      </div>
+    </div>
+  <% end) %>
 </section>
 

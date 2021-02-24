@@ -11,9 +11,14 @@ defmodule WidgetMarketplaceWeb.PageController do
 
   def widgets(conn, _) do
     user = Guardian.Plug.current_resource(conn)
-    widgets = WidgetMarketplace.all(Widget)
+    widgets = WidgetMarketplace.all(Widget, [:user])
+    new_widget_path = Routes.page_path(conn, :new_widget)
 
-    render(conn, "widgets.html", current_user: user, widgets: widgets)
+    render(conn, "widgets.html",
+      current_user: user,
+      widgets: widgets,
+      new_widget_path: new_widget_path
+    )
   end
 
   def new_widget(conn, _) do
@@ -23,9 +28,7 @@ defmodule WidgetMarketplaceWeb.PageController do
     render(conn, "new_widget.html",
       changeset: changeset_with_user,
       current_user: user,
-      action:
-        Routes.page_path(conn, :new_widget)
-        |> IO.inspect(label: "=====================> action rout")
+      action: Routes.page_path(conn, :new_widget)
     )
   end
 
@@ -38,7 +41,7 @@ defmodule WidgetMarketplaceWeb.PageController do
     |> WidgetMarketplace.create(%{
       description: description,
       price: price,
-      user: user
+      user_id: user.id
     })
     |> case do
       {:ok, _widget} ->

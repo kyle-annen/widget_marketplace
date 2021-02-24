@@ -17,6 +17,12 @@ defmodule WidgetMarketplace do
   """
   def all(schema), do: Repo.all(schema)
 
+  def all(schema, preloads) do
+    schema
+    |> Repo.all()
+    |> Repo.preload(preloads)
+  end
+
   @doc """
   Given a Repo schema namespace and attributes, creates the schema entry
   """
