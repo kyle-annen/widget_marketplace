@@ -11,7 +11,7 @@ defmodule WidgetMarketplace.Guardian do
     {:ok, to_string(user.id)}
   end
 
-  def resource_from_claims(%{"sub" => id}) do
+  def resource_from_claims(%{"sub" => id} = claims) do
     WidgetMarketplace.get(User, id)
   rescue
     Ecto.NoResultsError -> {:error, :resource_not_found}

@@ -22,6 +22,8 @@ defmodule WidgetMarketplace do
 
     case Repo.one(query) do
       nil ->
+        # Ensures hash is run, making both successful/unsuccessful login
+        # attempts execute in the same time
         Argon2.no_user_verify()
         {:error, :invalid_credentials}
 

@@ -7,6 +7,7 @@ defmodule WidgetMarketplace.ErrorHandler do
   import Plug.Conn
   @impl Guardian.Plug.ErrorHandler
   def auth_error(conn, {type, _reason}, _opts) do
+    IO.inspect(type, label: "#{__MODULE__} auth error")
     body = to_string(type)
 
     conn

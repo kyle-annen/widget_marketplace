@@ -5,12 +5,12 @@ defmodule WidgetMarketplaceWeb.SessionController do
   alias WidgetMarketplace.Repo.User
 
   def new(conn, _) do
-    changeset = User.changeset(%User{}, %{})
     maybe_user = Guardian.Plug.current_resource(conn)
 
     if maybe_user do
       redirect(conn, to: "/protected")
     else
+      changeset = User.changeset(%User{}, %{})
       render(conn, "new.html", changeset: changeset, action: Routes.session_path(conn, :login))
     end
   end
@@ -23,7 +23,7 @@ defmodule WidgetMarketplaceWeb.SessionController do
   def create(conn, %{"user" => user_attrs}) do
     case WidgetMarketplace.create(User, user_attrs) do
       {:ok, user} ->
-        login_reply({:ok, user}, Guardian.Plug.sign_in(conn, user))
+        login_reply({:ok, user}, conn)
 
       {:error, changeset} ->
         render(conn, "create.html",
@@ -33,7 +33,7 @@ defmodule WidgetMarketplaceWeb.SessionController do
     end
   end
 
-  def login(conn, %{"user" => %{"email" => email, "password" => password}}) do
+  def login(conn, %{"user" => %{"email" => email, "password" => password}} = attrs) do
     email
     |> WidgetMarketplace.authenticate(password)
     |> login_reply(conn)

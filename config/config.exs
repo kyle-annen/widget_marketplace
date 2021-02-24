@@ -10,7 +10,7 @@ use Mix.Config
 config :widget_marketplace,
   ecto_repos: [WidgetMarketplace.Repo]
 
-config :widget_marketplace, WidgetMarketplaceWeb.Guardian,
+config :widget_marketplace, WidgetMarketplace.Guardian,
   issuer: "widget_marketplace",
   # this should be abstracted to an env variable which is set during prod docker build
   secret_key: "hbV7ionQAGK6QViWzthSX6aMuB49y5uWHR2PzYiWHbh1Bs7Q8U84CulM1xtuGgGv"
