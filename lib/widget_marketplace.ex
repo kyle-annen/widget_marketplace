@@ -49,6 +49,8 @@ defmodule WidgetMarketplace do
     end)
   end
 
+  def get_user_balance(_), do: 0
+
   @doc """
   Checks that the account balance is sufficient for the transaction
   """
