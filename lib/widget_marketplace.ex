@@ -2,9 +2,10 @@ defmodule WidgetMarketplace do
   @moduledoc """
   WidgetMarketplace encapsulating the backend business logic
   """
-  import Ecto.Query, only: [from: 2]
+  import Ecto.Query, only: [from: 2, where: 3]
 
   alias WidgetMarketplace.Repo
+  alias WidgetMarketplace.Repo.Transaction
   alias WidgetMarketplace.Repo.User
 
   @doc """
@@ -33,7 +34,23 @@ defmodule WidgetMarketplace do
   end
 
   @doc """
-  Hashed the the password entered by the user, authenticates by compariing the
+  Returns the users balance, which is an aggregation of all transactions
+  """
+  def get_user_balance(%User{id: user_id}) do
+    Transaction
+    |> where([t], t.seller_id == ^user_id or t.buyer_id == ^user_id)
+    |> Repo.all()
+    |> Enum.reduce(0, fn %{seller_id: seller_id, amount: amount}, total ->
+      if seller_id == user_id do
+        total + amount
+      else
+        total - amount
+      end
+    end)
+  end
+
+  @doc """
+  Hashes the password entered by the user, authenticates by comparing the
   password_hash against the hash produced from the user entered password during
   login.
 

@@ -2,7 +2,9 @@ defmodule WidgetMarketplaceTest do
   use WidgetMarketplace.DataCase
 
   alias WidgetMarketplace.Repo
+  alias WidgetMarketplace.Repo.Transaction
   alias WidgetMarketplace.Repo.User
+  alias WidgetMarketplace.Repo.Widget
 
   @valid_user_atrrs %{
     first_name: "test",
@@ -46,6 +48,50 @@ defmodule WidgetMarketplaceTest do
       {:ok, _user} = WidgetMarketplace.create(User, @valid_user_atrrs)
 
       assert {:ok, _user} = WidgetMarketplace.authenticate("testuser@test.com", "valid_pass")
+    end
+  end
+
+  describe "get_user_balance/1" do
+    test "returns the users balance" do
+      {:ok, user} = WidgetMarketplace.create(User, @valid_user_atrrs)
+
+      {:ok, _transaction} =
+        WidgetMarketplace.create(Transaction, %{seller_id: user.id, amount: 1000})
+
+      assert 1000 = WidgetMarketplace.get_user_balance(user)
+    end
+
+    test "returns the users balance on both sides of the transaction" do
+      {:ok, seller} = WidgetMarketplace.create(User, @valid_user_atrrs)
+
+      {:ok, widget} =
+        %Widget{}
+        |> Widget.changeset(%{
+          description: "A great widget",
+          price: 123,
+          user_id: seller.id
+        })
+        |> Repo.insert()
+
+      {:ok, buyer} =
+        WidgetMarketplace.create(
+          User,
+          Map.merge(@valid_user_atrrs, %{email: "another@email.com"})
+        )
+
+      {:ok, _buyer_add_funds_transaction} =
+        WidgetMarketplace.create(Transaction, %{seller_id: buyer.id, amount: 1000})
+
+      {:ok, _transaction} =
+        WidgetMarketplace.create(Transaction, %{
+          seller_id: seller.id,
+          amount: 200,
+          buyer_id: buyer.id,
+          widget_id: widget.id
+        })
+
+      assert 800 = WidgetMarketplace.get_user_balance(buyer)
+      assert 200 = WidgetMarketplace.get_user_balance(seller)
     end
   end
 end
