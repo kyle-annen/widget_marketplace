@@ -45,7 +45,7 @@ mix test
 ```
 
 # Technology choices
-- Elixir: Citybase writes elixir, seemed logical
+- Elixir: My go to language for backend services.
 - Postgres: I always ask "Why not postgres", and I think that answer should be compelling. Super mature, open source.
 - Phoenix: Even for APIs, I find Phoenix to offer many of the features I would like to have.
 
