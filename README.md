@@ -59,7 +59,7 @@ mix test
 # Hex dependencies
 
 #### argon2_elixir
-This dependecy is need to ensure the hashing used is strong engouh to last in production for a few years.
+This dependecy is need to ensure the hashing used is strong enough to last in production for a few years.
 
 #### ecto_sql
 This dependecy is needed in order to use Ecto with the postgres database.
@@ -74,10 +74,10 @@ This dependecy is use to serialize/deserialize JSON.
 This is the base web framework.
 
 #### phoenix_ecto
-This is the plugin integrates phoenix and ecot
+This is the plugin which integrates phoenix and ecto
 
 #### phoenix_html
-This plugin provids many methods for creating html markup dynamically using helpers.
+This plugin provides many methods for creating html markup dynamically using helpers.
 
 #### phoenix_live_dashboard
 This plugin now ships with phoenix. Link is removed, but can still be visited at `http://localhost:4000/dashboard`
@@ -104,7 +104,7 @@ Configurable static code analyzer, used in development and CI.
 Test watcher to smooth development.
 
 #### dialyxir
-Descrpancy analyzer for elixir. Used to check type signature if typespecs are provided, dead/unreachable code, unneeded test, etc. Used in CI.
+Descrepancy analyzer for elixir. Used to check type signature if typespecs are provided, dead/unreachable code, unneeded test, etc. Used in CI.
 
 
 
